@@ -1,4 +1,4 @@
-const { createError } = require("../../libs/error");
+const { createError } = require("../libs/error");
 
 /**
  *

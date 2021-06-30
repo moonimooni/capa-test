@@ -1,5 +1,5 @@
-const storesService = require("../../services/stores/index");
-const storesList = require("../../stores.json");
+const storesService = require("../services/store");
+const storesList = require("../stores.json");
 
 exports.getStores = (req, res, next) => {
   const { offset, limit } = req.query;
