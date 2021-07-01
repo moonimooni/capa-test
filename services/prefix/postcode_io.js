@@ -12,7 +12,30 @@ exports.getPostCodeInformation = (postCode) => {
     .then((res) => res.json())
     .then((json) => json.result)
     .catch((err) => {
-      return createError(
+      throw createError(
+        err.message || "external api call error",
+        err.status || 400
+      );
+    });
+};
+
+/**
+ *
+ * @param {number} centerLongitude
+ * @param {number} centerLatitude
+ * @param {number} radius
+ */
+exports.getNearestPostcodesInformation = (
+  centerLongitude,
+  centerLatitude,
+  radius
+) => {
+  const uri = `${POSTCODES_IO_URI}?lon=${centerLongitude}&lat=${centerLatitude}&radius=${radius}`;
+  return fetch(uri)
+    .then((res) => res.json())
+    .then((json) => json.result)
+    .catch((err) => {
+      throw createError(
         err.message || "external api call error",
         err.status || 400
       );
