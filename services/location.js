@@ -1,14 +1,16 @@
-const { getPostCodeInformation } = require("./prefix/postcode_io");
+const postcodeIoCall = require("./prefix/postcode_io");
 const storeService = require("./store");
 const storesList = require("../stores.json");
 
 /**
  *
- * @param {string} postCode
+ * @param {string} storeName
  */
 exports.getCoordinateByStoreName = async (storeName) => {
-  const postCode = storeService.getStore(storeName, storesList).postcode;
-  const postCodeInformation = await getPostCodeInformation(postCode);
-  const { longitude, latitude } = postCodeInformation;
+  const postcode = storeService.getStore(storeName, storesList).postcode;
+  const postcodeInformation = await postcodeIoCall.getPostcodeInformation(
+    postcode
+  );
+  const { longitude, latitude } = postcodeInformation;
   return { longitude, latitude };
 };
