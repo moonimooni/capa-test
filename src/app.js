@@ -13,6 +13,6 @@ app.use(router);
 app.use(errorController.errorLogger);
 app.use(errorController.errorHandler);
 
-app.listen(8080, () => {
+module.exports = app.listen(8080, () => {
   console.log("port 8080 on");
 });
