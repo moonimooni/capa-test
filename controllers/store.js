@@ -1,13 +1,10 @@
-const storesService = require("../services/store");
+const storeService = require("../services/store");
 const storesList = require("../stores.json");
 
-exports.getStores = (req, res, next) => {
-  const { offset, limit } = req.query;
-  const offsetNum = Number(offset);
-  const limitNum = Number(limit);
-
+exports.getStores = async (req, res, next) => {
+  const params = req.query;
   try {
-    const stores = storesService.getStores(offsetNum, limitNum, storesList);
+    const stores = await storeService.getStores(params, storesList);
     return res.status(200).json({ data: stores });
   } catch (err) {
     return next(err);
@@ -17,7 +14,7 @@ exports.getStores = (req, res, next) => {
 exports.getStore = (req, res, next) => {
   const { storeName } = req.params;
   try {
-    const store = storesService.getStore(storeName, storesList);
+    const store = storeService.getStore(storeName, storesList);
     return res.status(200).json({ data: store });
   } catch (err) {
     return next(err);
