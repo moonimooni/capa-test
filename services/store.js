@@ -1,6 +1,6 @@
 const { createError } = require("../libs/error");
 const { parseIntParamsValue } = require("../libs/params");
-const postcodeIoCalls = require("./prefix/postcode_io");
+const postcodeIoCall = require("./prefix/postcode_io");
 
 /**
  *
@@ -13,9 +13,9 @@ exports.getStores = async (params, storesList) => {
     const {
       longitude,
       latitude,
-    } = await postcodeIoCalls.getPostCodeInformation(postcode);
+    } = await postcodeIoCall.getPostcodeInformation(postcode);
 
-    const addresses = await postcodeIoCalls.getNearestPostcodesInformation(
+    const addresses = await postcodeIoCall.getNearestPostcodesInformation(
       longitude,
       latitude,
       radius

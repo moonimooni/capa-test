@@ -4,16 +4,22 @@ const POSTCODES_IO_URI = "https://api.postcodes.io/postcodes";
 
 /**
  *
- * @param {string} postCode
+ * @param {string} postcode
  */
-exports.getPostCodeInformation = (postCode) => {
-  const uri = POSTCODES_IO_URI + "/" + postCode;
+exports.getPostcodeInformation = (postcode) => {
+  const uri = POSTCODES_IO_URI + "/" + postcode;
   return fetch(uri)
     .then((res) => res.json())
-    .then((json) => json.result)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.result;
+      } else {
+        throw createError(res.error, res.status);
+      }
+    })
     .catch((err) => {
       throw createError(
-        err.message || "external api call error",
+        err.message || "postcodes.io call error",
         err.status || 400
       );
     });
@@ -25,7 +31,7 @@ exports.getPostCodeInformation = (postCode) => {
  * @param {number} centerLatitude
  * @param {number} radius
  */
-exports.getNearestPostcodesInformation = (
+exports.getPostcodesInformationInRadius = (
   centerLongitude,
   centerLatitude,
   radius
@@ -36,10 +42,16 @@ exports.getNearestPostcodesInformation = (
   }
   return fetch(uri)
     .then((res) => res.json())
-    .then((json) => json.result)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.result;
+      } else {
+        throw createError(res.error, res.status);
+      }
+    })
     .catch((err) => {
       throw createError(
-        err.message || "external api call error",
+        err.message || "postcodes.io call error",
         err.status || 400
       );
     });
