@@ -1,55 +1,45 @@
 const { createError } = require("../libs/error");
+const { parseIntParamsValue } = require("../libs/params");
 const postcodeIoCalls = require("./prefix/postcode_io");
 
 /**
  *
- * @param {number} offset
- * @param {number} limit
+ * @param {object} params
  * @param {array} storesList
  */
-exports.getStores = (offset, limit, storesList) => {
+exports.getStores = async (params, storesList) => {
+  const { offset, limit, radius, postcode } = parseIntParamsValue(params);
+  if (radius && postcode) {
+    const {
+      longitude,
+      latitude,
+    } = await postcodeIoCalls.getPostCodeInformation(postcode);
+
+    const addresses = await postcodeIoCalls.getNearestPostcodesInformation(
+      longitude,
+      latitude,
+      radius
+    );
+
+    addresses.sort((a, b) => {
+      return b.latitude - a.latitude;
+    });
+
+    storesList = storesList.filter((store) => {
+      return addresses.some((address) => {
+        return address.postcode === store.postcode;
+      });
+    });
+  }
+
   if (offset && limit) {
     if (offset >= limit) {
       throw createError("invalid range", 400);
     }
     const spliceCount = limit - offset + 1;
-    return storesList.splice(offset, spliceCount);
-  } else {
-    return storesList;
+    storesList = storesList.splice(offset, spliceCount);
   }
-};
-
-/**
- *
- * @param {string} postcode
- * @param {number} radius
- * @param {storesList} array
- */
-exports.getStoresInRadiusByPostcode = async (postcode, radius, storesList) => {
-  const { longitude, latitude } = await postcodeIoCalls.getPostCodeInformation(
-    postcode
-  );
-  const addresses = await postcodeIoCalls.getNearestPostcodesInformation(
-    longitude,
-    latitude,
-    radius
-  );
-  addresses.map((address) => {
-    return {
-      longitude: address.longitude,
-      latitude: address.latitude,
-      postcode: address.postcode,
-      name: address.parliamentary_constituency,
-    };
-  });
-  addresses.sort((a, b) => {
-    return a.latitude - b.latitude;
-  });
-  return storesList.filter((store) => {
-    return addresses.includes((address) => {
-      return address.postcode === store.postcode;
-    });
-  });
+  return storesList;
 };
 
 /**

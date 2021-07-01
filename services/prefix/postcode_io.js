@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const createError = require("../../libs/error");
+const { createError } = require("../../libs/error");
 const POSTCODES_IO_URI = "https://api.postcodes.io/postcodes";
 
 /**
@@ -31,6 +31,9 @@ exports.getNearestPostcodesInformation = (
   radius
 ) => {
   const uri = `${POSTCODES_IO_URI}?lon=${centerLongitude}&lat=${centerLatitude}&radius=${radius}`;
+  if (radius <= 0 || radius > 2000) {
+    throw createError("invalid radius range", 400);
+  }
   return fetch(uri)
     .then((res) => res.json())
     .then((json) => json.result)
