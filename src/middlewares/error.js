@@ -9,7 +9,18 @@ exports.errorHandler = (err, req, res, next) => {
 
 exports.errorLogger = (err, req, res, next) => {
   if (err) {
-    console.log(`[${new Date()}] : ${err.stack}`);
+    console.log(
+      `
+      [${new Date()}]
+      headers : ${JSON.stringify(req.headers)}
+      
+      url : ${req.url}
+      method : ${req.method}
+
+      response status : ${err.statusCode || err.status}
+      response message : ${err.error || err.message}
+      `
+    );
     return next(err);
   }
   return next();
