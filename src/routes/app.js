@@ -1,4 +1,4 @@
-const storeRouter = require("./store");
+const storeRouter = require("./stores");
 
 const router = require("express").Router();
 

@@ -1,9 +1,9 @@
-const { createError } = require("../libs/error");
-const { parseIntParamsValue } = require("../libs/params");
+const { createError } = require("../../libs/error");
+const { parseIntParamsValue } = require("../../libs/params");
 
-const postcodeIoCall = require("./prefix/postcode_io");
+const postcodeIoCall = require("../prefix/postcode_io");
 
-const storesJson = require("../stores.json");
+const storesJson = require("../../stores.json");
 
 /**
  *

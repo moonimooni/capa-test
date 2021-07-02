@@ -1,5 +1,5 @@
-const postcodeIoCall = require("./prefix/postcode_io");
-const storeService = require("./store");
+const postcodeIoCall = require("../prefix/postcode_io");
+const storeService = require("./stores");
 
 /**
  *
