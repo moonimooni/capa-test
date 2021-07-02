@@ -14,7 +14,7 @@ exports.getStores = async (req, res, next) => {
 exports.getStore = (req, res, next) => {
   const { storeName } = req.params;
   try {
-    const store = storeService.getStore(storeName);
+    const store = storeService.getStoreByName(storeName);
     return res.status(200).json({ data: store });
   } catch (err) {
     return next(err);

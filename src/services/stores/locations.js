@@ -6,7 +6,7 @@ const storeService = require("./stores");
  * @param {string} storeName
  */
 exports.getCoordinateByStoreName = async (storeName) => {
-  const postcode = storeService.getStore(storeName).postcode;
+  const postcode = storeService.getStoreByName(storeName).postcode;
   const postcodeInformation = await postcodeIoCall.getPostcodeInformation(
     postcode
   );

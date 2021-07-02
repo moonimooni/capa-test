@@ -42,7 +42,7 @@ exports.getStores = async (params) => {
  *
  * @param {string} storeName
  */
-exports.getStore = (storeName) => {
+exports.getStoreByName = (storeName) => {
   const store = storesJson.find((storeObject) => {
     return storeObject.name === storeName;
   });
